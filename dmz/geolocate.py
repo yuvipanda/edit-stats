@@ -3,6 +3,8 @@ Provides simple functions that geo-locate an IP address (IPv4 or IPv4) using the
 MaxMind Geo Database.
 """
 import pygeoip
+import socket
+
 
 class GeoLocator(object):
     """Geo locate IP addresses using the MaxMind database"""
