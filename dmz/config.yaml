@@ -1,2 +1,3 @@
 DB_HOST: 'analytics-store.eqiad.wmnet'
 STORE_PATH: 'store.sqlite3'
+DB_DEFAULTS_FILE: '/etc/mysql/conf.d/research-client.cnf'
