@@ -21,6 +21,7 @@ def edits_per_country(runner, wiki, start_time, end_time):
 
     desktop_edits = {}
     mobile_edits = {}
+    all_edits = {}
 
     cur = runner.db.cursor()
     try:
@@ -46,12 +47,22 @@ def edits_per_country(runner, wiki, start_time, end_time):
                         mobile_edits[country] += row[1]
                     else:
                         mobile_edits[country] = row[1]
+                if country in all_edits:
+                    all_edits[country] += row[1]
+                else:
+                    all_edits[country] = row[1]
 
             rows = cur.fetchmany(1000)
             print 'done %s' % i
 
         runner.store.set_country_info_bulk(wiki, 'desktop_edits', desktop_edits)
         runner.store.set_country_info_bulk(wiki, 'mobile_edits', mobile_edits)
+        runner.store.set_country_info_bulk(wiki, 'all_edits', all_edits)
+
+        # Write totals!
+        runner.store.set_wiki_meta(wiki, 'desktop_edits', sum(desktop_edits.values()))
+        runner.store.set_wiki_meta(wiki, 'mobile_edits', sum(mobile_edits.values()))
+        runner.store.set_wiki_meta(wiki, 'all_edits', sum(all_edits.values()))
     finally:
         cur.close()
 
